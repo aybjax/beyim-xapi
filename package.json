@@ -12,7 +12,7 @@
   "unpkg": "dist/beyim-xapi/beyim-xapi.esm.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ionic-team/stencil-component-starter.git"
+    "url": "https://github.com/aybjax/beyim-xapi"
   },
   "files": [
     "dist/",
