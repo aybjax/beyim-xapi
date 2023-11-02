@@ -1,6 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core';
 import {User} from './user'
 import { v4 as uuid } from 'uuid';
+import { Element, HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
   tag: 'beyim-xapi',
@@ -8,6 +9,8 @@ import { v4 as uuid } from 'uuid';
   shadow: true,
 })
 export class BeyimXapi {
+  @Element()
+  hostElement: HTMLStencilElement;  
   dox_id = uuid();
   observer: IntersectionObserver|undefined;
   timeout:NodeJS.Timeout|undefined;
@@ -64,6 +67,16 @@ export class BeyimXapi {
   }
 
   componentDidLoad() {
+    // make sure only 1 child is allowed
+    if(this.hostElement.children.length != 1) {
+      alert('Only 1 child element is allowed in <beyim-xapi/>')
+      this.error('Only 1 child element is allowed in <beyim-xapi/>. this component will not be functional')
+
+      return
+    }
+
+    this.applyStyle()
+
     if(this.type !== 'button' && this.type !== 'view') {
       this.error(`forgot to add 'type' attribute`)
       window.alert(`[id:${this.dox_id}] beyim-xapi element requires type attribute ('view'|'button')`)
@@ -171,27 +184,29 @@ export class BeyimXapi {
       entries.forEach((entry) => {
         
         if(! entry.isIntersecting) {
-          this.log(`Element is out of view ${this.timeout ? `trying to remove trigger for view counter (${this.view_timeout})` : ''}`)
+          this.log(`Element is out of view ${this.timeout ? `trying to remove trigger for view counter (${this.view_timeout} seconds)` : ''}`)
           try{
             clearTimeout(this.timeout)
           }catch{}
 
           return
-        } else {
-          this.log(`Element is in view ${this.timeout ? `waiting for (${this.view_timeout}) seconds to send request` : ''}`)
         }
 
         this.timeout = setTimeout(() => {
-          this.log(`Element's ${Math.round(this.view_threshold / 100)}% has been visible for ${this.view_timeout} seconds`)
+          this.log(`Element's ${Math.round(this.view_threshold)}% has been visible for ${this.view_timeout} seconds`)
           this.sendEvent()
         }, this.view_timeout * 1000)
+        
+        this.log(`Element's ${this.view_threshold}% is in view ${this.timeout ? `waiting for (${this.view_timeout}) seconds to send request` : ''}`)
       });
     }, {
       threshold: this.view_threshold / 100,
     })
     
-    this.observer.observe(el);
-    this.log('Registered scroll listener')
+    try {
+      this.observer.observe(el);
+      this.log('Registered scroll listener')
+    }catch{}
   }
 
   log(...msg) {
@@ -202,5 +217,21 @@ export class BeyimXapi {
 
   error(...msg) {
     console.error(`[beyim-xapi:ERROR:${this.dox_id}]`, ...msg)
+  }
+
+  // style host element
+  applyStyle() {
+    //@ts-ignore
+    if(this.hostElement.firstElementChild.style) this.hostElement.style.margin = this.hostElement.firstElementChild.style.margin
+    //@ts-ignore
+    if(this.hostElement.firstElementChild.style) this.hostElement.firstElementChild.style.margin = '0px'
+    //@ts-ignore
+    if(this.hostElement.firstElementChild.style) this.hostElement.style.outline = this.hostElement.firstElementChild.style.outline
+    //@ts-ignore
+    if(this.hostElement.firstElementChild.style) this.hostElement.firstElementChild.style.outline = '0px'
+    //@ts-ignore
+    if(this.hostElement.firstElementChild.style) this.hostElement.style.width = this.hostElement.firstElementChild.style.width
+    //@ts-ignore
+    if(this.hostElement.firstElementChild.style) this.hostElement.style.height = this.hostElement.firstElementChild.style.height
   }
 }
