@@ -22,4 +22,7 @@ export const config: Config = {
     browserHeadless: "new",
   },
   globalScript: "src/global/global.ts",
+  extras: {
+    enableImportInjection: true,
+  }
 };

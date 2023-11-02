@@ -56,7 +56,7 @@ export class BeyimXapi {
   }
 
   get backendUrl() {
-    if(!!this.backend) return this.backend + '/ui/lrs/test-lrs';
+    if(!!this.backend) return this.backend + '/beyim-lrs/xapi/';
     
     this.error('backend attribute is not set, for sending request switching to local server', BeyimXapi.LOCAL_BACKEND_URL)
 
@@ -120,7 +120,7 @@ export class BeyimXapi {
     const user = User.getUser();
 
     if (!user) return;
-
+    
     const conf = {
       "endpoint": this.backendUrl,
       "auth": "Basic " + btoa(`${User.X_API_USERNAME}:${User.X_API_PASSWD}`),
