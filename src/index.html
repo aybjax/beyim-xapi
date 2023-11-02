@@ -1,14 +1,70 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
   <head>
+    <script>
+      document.cookie = "idToken=eyJraWQiOiJkZDN1N3ZmQU9WSEk0ZlV2Y085OFwvM1RVWEszMkthRVoxTkszOTZrNkFqdz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJiMTY2ODU3NC0zM2E2LTRjMmYtOTAzZC03NTA0YzEyMTgxNjYiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbiJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LWNlbnRyYWwtMS5hbWF6b25hd3MuY29tXC9ldS1jZW50cmFsLTFfbWZwTDVMN2VVIiwiY29nbml0bzp1c2VybmFtZSI6ImIxNjY4NTc0LTMzYTYtNGMyZi05MDNkLTc1MDRjMTIxODE2NiIsIm9yaWdpbl9qdGkiOiI4MjI1MWNjNi1mNmYzLTRiZjgtOWIyZi1iNGM3ODMwNDU1ZGYiLCJhdWQiOiI3MmhnZzc2ajNtZGFwZGdwcDV2M2hkNGo4YiIsImV2ZW50X2lkIjoiMDcxNTAzOWYtMjRkNy00NmFhLTk5YmEtMDA4MWRhYmMwZWJjIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2OTgwNTA5NDIsImV4cCI6MTY5ODEzNzM0MiwiaWF0IjoxNjk4MDUwOTQyLCJqdGkiOiJlZDU2MmE1Mi04ZjU4LTQ3NmYtYjMxNy1hMTBlMDk0NzJlNDAiLCJlbWFpbCI6ImFkbWluQGJleWltLm5pcy5lZHUua3oifQ.TcH57e09anWAlTfYvAy1HISUEdS9QgNB2sN4aAiiRfzKO40IzK4PwAoBLaPZflNmQxLanjv0oq02kRH4akTb6kopfvIdetGTLzXVU8bkgV4IiL7GUzWDJaFsrEH3AaYnFTjWdg9VPOfuROUEtm4PT8BdpG9mvGH9dcX4wY2Xydx59lR_KTObUO4Z6jiOz-OcpMG05pstd88VEoDmwiyQhBz4Ucz00P0KqH64wem4dLudRnLtceiNnVey3T4bHP1NxV6uJQWXbJkwLxJPHJBUGe7oF-S2lWsgbTgglQpT4iI0MUkQyJJ_cKo6fZyTMWCtN-MV7H3hCmQIYnEQQx7-TQ";
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
     <title>Stencil Component Starter</title>
 
     <script type="module" src="/build/beyim-xapi.esm.js"></script>
     <script nomodule src="/build/beyim-xapi.js"></script>
+    <style>
+      .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .item {
+        width: 100%;
+        background-color: rgb(0, 0, 0, 0.8);
+        color: white;
+        min-height: 100px;
+        width: 100px;
+        margin-bottom: 500px;
+      }
+    </style>
   </head>
-  <body>
-    <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
+  <body class="container">
+    <beyim-xapi
+      debug
+      verb="clicked 1"
+      name="post hello 1 clickable"
+      type="view"
+      class="item">
+      <h1>Hello world 1</h1>
+    </beyim-xapi>
+
+    <beyim-xapi
+      debug
+      verb="clicked 2"
+      name="post hello 2 clickable"
+      host="aybjax.com"
+      type="view" class="item">
+      <h1>Hello world 2</h1>
+    </beyim-xapi>
+    
+    <beyim-xapi
+      debug
+      verb="view 3"
+      name="post hello 3 viewed for 1 sec"
+      type="view"
+      view-timeout="1" class="item">
+      <h1>Hello world 3</h1>
+    </beyim-xapi>
+    
+    <beyim-xapi
+      debug
+      verb="view 4"
+      name="post hello 4 viewed for 5 sec"
+      host="aigerim.com"
+      view-timeout="5"
+      type="view"
+      class="item">
+      <h1>Hello world 4</h1>
+    </beyim-xapi>
   </body>
 </html>

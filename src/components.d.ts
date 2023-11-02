@@ -6,56 +6,62 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface MyComponent {
+    interface BeyimXapi {
         /**
-          * The first name
+          * Component stuff
          */
-        "first": string;
+        "backend"?: string;
+        "debug"?: boolean;
+        "host_url"?: string;
+        "name": string;
+        "subject": string|undefined;
+        "type": 'button'|'view';
         /**
-          * The last name
+          * X-API stuff
          */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
+        "verb": string;
+        "view_threshold"?: number;
+        "view_timeout"?: number;
     }
 }
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+    interface HTMLBeyimXapiElement extends Components.BeyimXapi, HTMLStencilElement {
     }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
+    var HTMLBeyimXapiElement: {
+        prototype: HTMLBeyimXapiElement;
+        new (): HTMLBeyimXapiElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
+        "beyim-xapi": HTMLBeyimXapiElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
+    interface BeyimXapi {
         /**
-          * The first name
+          * Component stuff
          */
-        "first"?: string;
+        "backend"?: string;
+        "debug"?: boolean;
+        "host_url"?: string;
+        "name": string;
+        "subject": string|undefined;
+        "type": 'button'|'view';
         /**
-          * The last name
+          * X-API stuff
          */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
+        "verb": string;
+        "view_threshold"?: number;
+        "view_timeout"?: number;
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
+        "beyim-xapi": BeyimXapi;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "beyim-xapi": LocalJSX.BeyimXapi & JSXBase.HTMLAttributes<HTMLBeyimXapiElement>;
         }
     }
 }
