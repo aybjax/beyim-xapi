@@ -3,11 +3,11 @@
 # Beyim Xapi wrapper component
 
 # Use
-
-<beyim-xapi ...attrs>
-    <component-for-xapi-notification></component-for-xapi-notification>
-</beyim-xapi>
-
+`
+    <beyim-xapi ...attrs>
+        <component-for-xapi-notification></component-for-xapi-notification>
+    </beyim-xapi>
+`
 ## Attributes
 
 - debug?:boolean
