@@ -11,43 +11,21 @@
     <script type="module" src="/build/beyim-xapi.esm.js"></script>
     <script nomodule src="/build/beyim-xapi.js"></script>
     <style>
-      .container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .x {
-        margin: auto;
-      }
-
-      .item {
-        width: 100%;
-        font: 35;
-        min-height: 100px;
-        width: 100px;
-        margin-bottom: 500px;
-      }
     </style>
   </head>
   <body >
-        <div>
-          <!-- <beyim-xapi -->
-            <!-- style="background-color: yellow;"
-            class="x"
-            debug
-            type="view"
-            verb="liked"
-            name="aybjax test inline block"
-            subject="Chemistry"
-            backend="http://backend.beyim.nis.edu.kz"
-          > -->
-            <div class="x">
-                hello
-            </div>
-          <!-- </beyim-xapi> -->
-        </div>
+      <div class="item">
+        <span
+          debug
+          type="view"
+          verb="liked"
+          name="aybjax test inline block"
+          subject="Chemistry"
+          backend="http://backend.beyim.nis.edu.kz"
+        >
+          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.explicit.bing.net%2Fth%3Fid%3DOIP.4d7Emr_d4fJnEE6zK7pj_wHaFK%26pid%3DApi&f=1&ipt=b2b92e3b5bbd1da85e6b931b709578caeba13f024806714304eaebcf6d7ed316&ipo=images" />
+        </span>
+      </div>
       <div class="item">
         <beyim-xapi
           debug
@@ -69,7 +47,19 @@
           subject="Chemistry"
           backend="http://backend.beyim.nis.edu.kz"
         >
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.explicit.bing.net%2Fth%3Fid%3DOIP.4d7Emr_d4fJnEE6zK7pj_wHaFK%26pid%3DApi&f=1&ipt=b2b92e3b5bbd1da85e6b931b709578caeba13f024806714304eaebcf6d7ed316&ipo=images" />
+          <div>Hello</div>
+        </beyim-xapi>
+      </div>
+      <div class="item">
+        <beyim-xapi
+          debug
+          type="view"
+          verb="liked"
+          name="aybjax test inline block"
+          subject="Chemistry"
+          backend="http://backend.beyim.nis.edu.kz"
+        >
+          <span>Hello</span>
         </beyim-xapi>
       </div>
   </body>

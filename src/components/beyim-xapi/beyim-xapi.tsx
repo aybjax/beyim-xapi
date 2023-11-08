@@ -221,17 +221,24 @@ export class BeyimXapi {
 
   // style host element
   applyStyle() {
+    const display = getComputedStyle(this.hostElement.firstElementChild)?.display ?? 'inline-block'
+
+    this.hostElement.style.display = display === 'block' ? 'block' : 'inline-block'
+    
+    this.hostElement.style.margin = getComputedStyle(this.hostElement.firstElementChild)?.margin
+    
     //@ts-ignore
-    if(this.hostElement.firstElementChild.style) this.hostElement.style.margin = this.hostElement.firstElementChild.style.margin
+    this.hostElement.firstElementChild.style.margin = '0px'
+    
+    this.hostElement.style.outline = getComputedStyle(this.hostElement.firstElementChild)?.outline
     //@ts-ignore
-    if(this.hostElement.firstElementChild.style) this.hostElement.firstElementChild.style.margin = '0px'
-    //@ts-ignore
-    if(this.hostElement.firstElementChild.style) this.hostElement.style.outline = this.hostElement.firstElementChild.style.outline
-    //@ts-ignore
-    if(this.hostElement.firstElementChild.style) this.hostElement.firstElementChild.style.outline = '0px'
-    //@ts-ignore
-    if(this.hostElement.firstElementChild.style) this.hostElement.style.width = this.hostElement.firstElementChild.style.width
-    //@ts-ignore
-    if(this.hostElement.firstElementChild.style) this.hostElement.style.height = this.hostElement.firstElementChild.style.height
+    
+    this.hostElement.firstElementChild.style.outline = '0px'
+    
+    const width = getComputedStyle(this.hostElement.firstElementChild)?.width ?? '0px';
+    if(!width.startsWith('0')) this.hostElement.style.width = getComputedStyle(this.hostElement.firstElementChild)?.width
+    
+    const height = getComputedStyle(this.hostElement.firstElementChild)?.height ?? '0px'
+    if(!height.startsWith('0')) this.hostElement.style.height = getComputedStyle(this.hostElement.firstElementChild)?.height
   }
 }
