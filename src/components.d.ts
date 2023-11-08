@@ -8,6 +8,10 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface BeyimXapi {
         /**
+          * X-API stuff
+         */
+        "_verb": string;
+        /**
           * Component stuff
          */
         "backend"?: string;
@@ -15,11 +19,7 @@ export namespace Components {
         "host_url"?: string;
         "name": string;
         "subject": string|undefined;
-        "type": 'button'|'view';
-        /**
-          * X-API stuff
-         */
-        "verb": string;
+        "type": 'button'|'view'|'video';
         "view_threshold"?: number;
         "view_timeout"?: number;
     }
@@ -38,6 +38,10 @@ declare global {
 declare namespace LocalJSX {
     interface BeyimXapi {
         /**
+          * X-API stuff
+         */
+        "_verb": string;
+        /**
           * Component stuff
          */
         "backend"?: string;
@@ -45,11 +49,7 @@ declare namespace LocalJSX {
         "host_url"?: string;
         "name": string;
         "subject": string|undefined;
-        "type": 'button'|'view';
-        /**
-          * X-API stuff
-         */
-        "verb": string;
+        "type": 'button'|'view'|'video';
         "view_threshold"?: number;
         "view_timeout"?: number;
     }

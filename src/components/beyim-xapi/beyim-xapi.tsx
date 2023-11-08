@@ -2,6 +2,7 @@ import { Component, Host, h, Prop } from '@stencil/core';
 import {User} from './user'
 import { v4 as uuid } from 'uuid';
 import { Element, HTMLStencilElement } from '@stencil/core/internal';
+import _ from 'lodash';
 
 @Component({
   tag: 'beyim-xapi',
@@ -12,18 +13,35 @@ export class BeyimXapi {
   @Element()
   hostElement: HTMLStencilElement;  
   dox_id = uuid();
+  video?: HTMLVideoElement;
   observer: IntersectionObserver|undefined;
   timeout:NodeJS.Timeout|undefined;
 
   static LOCAL_BACKEND_URL = 'http://local.veracity.it'
 
   get hostUrl() {
+    if (this.type === 'video') {
+      const url = new URL(this.video?.currentSrc ?? '');
+      url.searchParams.set('time', `${Math.round(this.video?.currentTime ?? 0)}s`)
+
+      return url.href
+    }
+
     return this.host_url ? this.host_url : window.location.href;
   }
 
   /** X-API stuff */
   @Prop({attribute: 'verb'})
-  verb!: string;
+  _verb!: string;
+  _video_verb?: string
+
+  get verb() {
+    if (this.type !== 'video') {
+      return this._verb
+    }
+
+    return this._video_verb ?? ''
+  }
   
   @Prop({attribute: 'name'})
   name!: string;
@@ -42,7 +60,7 @@ export class BeyimXapi {
   backend?: string;
 
   @Prop({attribute: 'type'})
-  type!: 'button'|'view';
+  type!: 'button'|'view'|'video';
 
   @Prop({attribute: 'view-timeout'})
   view_timeout?: number = 10;
@@ -56,6 +74,10 @@ export class BeyimXapi {
 
   get isButton() {
     return this.type === 'button'
+  }
+
+  get isVideo() {
+    return this.type === 'video'
   }
 
   get backendUrl() {
@@ -77,14 +99,15 @@ export class BeyimXapi {
 
     this.applyStyle()
 
-    if(this.type !== 'button' && this.type !== 'view') {
+    if(this.type !== 'button' && this.type !== 'view' && this.type !== 'video') {
       this.error(`forgot to add 'type' attribute`)
       window.alert(`[id:${this.dox_id}] beyim-xapi element requires type attribute ('view'|'button')`)
 
       return
     }
 
-    if(!this.subject || !this.verb || !this.name) {
+    // TODO do I need to remove verb getter?
+    if(!this.subject || /*!this.verb ||*/ !this.name) {
       this.error(`forgot to add 'attributes: 'subject', 'verb' or 'name'`)
       window.alert(`[id:${this.dox_id}] beyim-xapi element requires attribute 'name', 'verb', 'subject'`)
     }
@@ -92,6 +115,26 @@ export class BeyimXapi {
     this.log(`Element is loaded`);
     if(this.isButton){
       this.log('Element is button')
+
+      return
+    }
+
+    if(this.isVideo){
+      const videoSize = this.hostElement.querySelectorAll('video')?.length ?? 0;
+
+      if (videoSize !== 1) {
+        this.error(`there should be exactly 1 video element inside beyim-xapi element`)
+        window.alert(`[id:${this.dox_id}] beyim-xapi element requires exactly 1 video element inside`)
+      }
+
+
+      this.log('Element is video');
+      this.video = this.hostElement.querySelector('video');
+
+      this.video?.addEventListener('play', this._playListener.bind(this));
+      this.video?.addEventListener('pause', this._pauseListener.bind(this));
+      this.video?.addEventListener('ended', this._endedListener.bind(this));
+      this.video?.addEventListener('seeked', this._seekedListener.bind(this));
 
       return
     }
@@ -104,6 +147,11 @@ export class BeyimXapi {
   disconnectedCallback() {
     this.log(`Element is disconnecting... ${this.observer ? 'disconnecting scroll listener' : ''}`);
     this.observer?.disconnect()
+
+    this.video?.removeEventListener('play', this._playListener);
+    this.video?.removeEventListener('pause', this._pauseListener);
+    this.video?.removeEventListener('ended', this._endedListener);
+    this.video?.removeEventListener('seeked', this._seekedListener);
   }
 
   render() {
@@ -133,6 +181,8 @@ export class BeyimXapi {
     const user = User.getUser();
 
     if (!user) return;
+
+    if (!this.verb) return;
     
     const conf = {
       "endpoint": this.backendUrl,
@@ -175,10 +225,54 @@ export class BeyimXapi {
     return 
   }
 
+  _playListener(_) {
+    this._video_verb = 'play'
+    this.log(this._video_verb, 'event is fired')
+    this.sendEvent()
+  }
+
+  _pauseListener(_) {
+    this._video_verb = 'pause'
+
+    const diff = Math.abs(this.video?.currentTime - this.video?.duration)
+
+    if(diff < 0.1) {
+      this.log(this._video_verb, 'occurred at the end => no event fired')
+
+      return
+    }
+
+    this.log(this._video_verb, 'event is fired')
+    this.sendEvent()
+  }
+
+  _seekedListener(_) {
+    this._video_verb = 'seeked'
+
+    if (this._ended_time - new Date().getTime() < 3000) {
+      this.log(this._video_verb, 'occurred less than 3s after "ended" event => no event is fired')
+
+      return
+    }
+
+    this.log(this._video_verb, 'event is fired')
+    this.sendEvent()
+  }
+
+  _ended_time: number = 0;
+  _endedListener(_) {
+    this._video_verb = 'ended'
+
+    this._ended_time = new Date().getTime()
+    
+    this.log(this._video_verb, 'event is fired')
+    this.sendEvent()
+  }
+
   registerObserver() {
     this.log('Registering scroll listener')
 
-    const el = document.getElementById(this.dox_id);
+    // const el = document.getElementById(this.dox_id);
 
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -204,7 +298,7 @@ export class BeyimXapi {
     })
     
     try {
-      this.observer.observe(el);
+      this.observer.observe(this.hostElement);
       this.log('Registered scroll listener')
     }catch{}
   }

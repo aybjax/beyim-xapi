@@ -27,11 +27,13 @@
   },
   "dependencies": {
     "@stencil/core": "^4.0.0",
+    "lodash": "^4.17.21",
     "uuid": "^9.0.1",
     "xapiwrapper": "^1.11.0"
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",
+    "@types/lodash": "^4.14.201",
     "@types/node": "^16.18.11",
     "jest": "^27.5.1",
     "jest-cli": "^27.5.1",
