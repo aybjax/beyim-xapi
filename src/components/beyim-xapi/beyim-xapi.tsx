@@ -21,7 +21,9 @@ export class BeyimXapi {
 
   get hostUrl() {
     if (this.type === 'video') {
-      const url = new URL(this.video?.currentSrc ?? '');
+      const host = this.host_url ? this.host_url : (this.video?.currentSrc ?? '');
+
+      const url = new URL(host);
       url.searchParams.set('time', `${Math.round(this.video?.currentTime ?? 0)}s`)
 
       return url.href
